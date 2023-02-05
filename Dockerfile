@@ -10,7 +10,9 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y  i2c-tools \
+    apt-get install -y  build-essential \
+                        cmake \
+                        i2c-tools \
                         libi2c0 \
                         libi2c-dev
 
