@@ -1,0 +1,100 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "cross: build (aarch64)",
+			"type": "shell",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"command": "cross",
+			"args": [
+				"build",
+				"--release",
+				"--target",
+				"aarch64-unknown-linux-gnu"
+			],
+			"group": {
+				"kind": "build",
+			},
+			"options": {
+				"env": {
+					"CROSS_CONTAINER_IN_CONTAINER": "1"
+				}
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		},
+		{
+			"label": "unit test",
+			"type": "shell",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"command": "cargo",
+			"args": [
+				"test",
+				"--quiet"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		},
+		{
+			"label": "build docker image (arm64)",
+			"type": "shell",
+			"problemMatcher": [],
+			"command": "docker",
+			"args": [
+				"buildx",
+				"build",
+				"--platform",
+				"linux/arm64",
+				"--tag",
+				"ghcr.io/kerrys-learning-lab/accelerometer-service:latest-arm64",
+				"."
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Deploy to rpi",
+			"type": "shell",
+			"command": "scp",
+			"problemMatcher": [],
+			"args": [
+				"target/aarch64-unknown-linux-gnu/release/accelerometer-*",
+				"data/*",
+				"rpi:/var/tmp/"
+			],
+			"dependsOn": [
+				"cross: build (aarch64)"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		}
+	]
+}

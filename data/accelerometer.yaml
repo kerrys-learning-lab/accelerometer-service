@@ -1,0 +1,10 @@
+mqtt_config:
+  url: tcp://localhost:1883
+  measurement_topic: /c9s/accelerometer/measurement
+
+device_config:
+  i2c_device_file: /dev/i2c-1
+  # chip: M845xQ
+  chip: ICM20948
+  scale: FourG
+  data_rate: DataRate50Hz
